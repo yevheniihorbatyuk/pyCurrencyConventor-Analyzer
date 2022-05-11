@@ -1,0 +1,12 @@
+/currency_rates.py
+/.idea/.gitignore
+/data/2022-05-11plot.png
+/data/currency_data_set.csv
+/data/from_2011-06-03_to_2012-06-03_currency_data_set.csv
+/data/from_2011-11-03_to_2012-01-03_currency_data_set.csv
+/data/from_2011-11-03_to_2012-06-03_currency_data_set.csv
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/pyCurrencyConventor-Analyzer.iml
+/.idea/vcs.xml
