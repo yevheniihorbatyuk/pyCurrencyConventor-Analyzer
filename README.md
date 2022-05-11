@@ -1,0 +1,1 @@
+# pyCurrencyConventor-Analyzer
