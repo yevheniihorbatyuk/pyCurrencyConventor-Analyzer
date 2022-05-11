@@ -80,11 +80,24 @@ def currency_analysis():
     max_of_df_rate_index = max_of_df_rate.index.values.astype(str)
     max_of_df_rate_values = max_of_df_rate['rate'].values
 
-    # Print main property
-    print('Head of DataFrame:', '\n\n',
+    # LOG
+    print('\n------------------------\n',
+          'Head of DataFrame:', '\n',
           df.head(5), '\n\n',
-          'Describer of DataFrame:', '\n\n',
-          df.describe())
+
+          '\n------------------------\n',
+          'Describer of DataFrame:', '\n',
+          df['rate'].describe(), '\n\n',
+
+          '\n------------------------\n',
+          'Max of years:', '\n',
+          max_of_df_rate, '\n',
+
+          '\n------------------------\n',
+          'Mean of years:', '\n',
+          mean_of_years, '\n')
+
+    # Print main property
     # sub_df = pd.DataFrame([{
     #     'code': [0],
     #     'rate': [0],
