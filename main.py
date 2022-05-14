@@ -8,8 +8,8 @@ end_date = '2022-01-06'
 base = 'EUR'
 symbols = 'RUB'
 # Getting data
-get_currency(start_date=start_date, end_date=end_date, base=base, symbols=symbols)
+# get_currency(start_date=start_date, end_date=end_date, base=base, symbols=symbols)
 
 # Analyze
-
+# currency_analysis('data/2022-05-15_currency_data_set.csv')
 

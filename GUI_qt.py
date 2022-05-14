@@ -103,7 +103,7 @@ class Window(QtWidgets.QWidget):
         try:
             fname = QFileDialog.getOpenFileName(self, 'Open file',
                                                 'data', "Any file (*.csv)")
-            print('File name:', fname[1])
+            print('File name:', fname[0])
 
             main.currency_analysis(file_name= fname[0])
         except:

@@ -28,7 +28,9 @@ def get_currency(start_date=None,
                    'amount': amount_r, 'format': format_r}
         response = requests.get(url, params=payload)
         sub_df = pd.read_csv(response.url, sep=',')
-        sub_df.to_csv(f'data/{start_date_r}_{end_date_r}_{base_r}_{symbols_r}_currency_data_set.csv', header=None, mode='a')
+        sub_df.to_csv(f'data/{start_date}_{end_date}_{base}_{symbols}_currency_data_set.csv', header=None, mode='a')
+        # sub_df.to_csv(f'data/{today_date}_currency_data_set.csv', header=None, mode='a')
+
         return sub_df
 
     # Date and time
@@ -49,6 +51,8 @@ def get_currency(start_date=None,
     # Clear data
     try:
         os.remove(f'data/{start_date}_{end_date}_{base}_{symbols}_currency_data_set.csv')
+        # os.remove(f'data/{today_date}_currency_data_set.csv')
+
     except:
         print('Not exist')
 
@@ -58,7 +62,6 @@ def get_currency(start_date=None,
           'request_date.size :', int((request_date.size / 366) + 1), '\n',
           'request_date')
 
-
     print('request_date.size :', request_date.size, '\n',
           request_date, '\n',
           request_date_period)
@@ -67,10 +70,10 @@ def get_currency(start_date=None,
     if request_date.size > 366:
         print("IF")
         for year in tqdm(range(0, request_date_period.size - 1), desc='Loading...'):
-            start_date = request_date_period[year]
-            end_date = request_date_period[year + 1]
+            start_date_period = request_date_period[year]
+            end_date_period = request_date_period[year + 1]
 
-            request(start_date, end_date, base, symbols, amount, format)
+            request(start_date_period, end_date_period, base, symbols, amount, format)
 
 
     else:
@@ -81,10 +84,11 @@ def get_currency(start_date=None,
 def currency_analysis(file_name):
     # Read data set
     df = pd.read_csv(f'{file_name}', sep=',',
-                     names=['zero', 'code', 'rate', 'base', 'date'], parse_dates=True)
+                     names=['index', 'date', 'code', 'rate', 'base', 'start_date', 'end_date'], parse_dates=True)
 
+    print(df)
     # Data engineer
-    df.drop('zero', axis=1, inplace=True)
+    df.drop('index', axis=1, inplace=True)
     df['rate'] = [x.replace(',', '.') for x in df['rate']]
     df['rate'] = df['rate'].astype(float)
     df['date'] = pd.to_datetime(df['date'])
