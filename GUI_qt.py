@@ -17,18 +17,32 @@ class Window(QtWidgets.QWidget):
 
     def initUI(self):
 
+        self.setWindowIcon(QtGui.QIcon('money.png'))
         self.setWindowTitle('Currency Analyzer')
         self.setGeometry(300, 300, 600, 600)
 
-        self.label = QtWidgets.QLabel(self)
+        # Start label
+        self.lable_start = QtWidgets.QLabel(self)
+        self.lable_start.setText('From :')
+        self.lable_start.setGeometry(0, 0, 30, 30)
+        self.lable_start.adjustSize()
 
+        # Start date line edit
         self.start_date = QtWidgets.QLineEdit(self)
         self.start_date.move(20, 20)
         self.start_date.setText(str(datetime.datetime.today().date()))
 
+        # End label
+        self.label_end = QtWidgets.QLabel(self)
+        self.label_end.setText('To :')
+        self.label_end.setGeometry(1, 40, 30, 30)
+
+
+        # End date line edit
         self.end_date = QtWidgets.QLineEdit(self)
-        self.end_date.move(20, 60)
+        self.end_date.move(20, 65)
         self.end_date.setText(str(datetime.datetime.today().date()))
+
 
         self.btn_request = QtWidgets.QPushButton(self)
         self.btn_request.move(20, 100)
@@ -42,9 +56,24 @@ class Window(QtWidgets.QWidget):
         self.btn_read_csv.adjustSize()
         self.btn_read_csv.clicked.connect(self.read_file)
 
+        # Label base
+        self.label_base = QtWidgets.QLabel(self)
+        self.label_base.setText('Base')
+        self.label_base.setGeometry(200, 1, 30, 30)
+        self.label_base.adjustSize()
+
+        # Base line edit
         self.base_line_edit = QtWidgets.QLineEdit(self)
         self.base_line_edit.setGeometry(200, 20, 50, 20)
 
+        # Label symbols
+        self.label_symbols = QtWidgets.QLabel(self)
+        self.label_symbols.setText('Symbols')
+        self.label_symbols.setGeometry(200, 40, 30, 30)
+        self.label_symbols.adjustSize()
+
+
+        # Symbols line edit
         self.symbols_line_edit = QtWidgets.QLineEdit(self)
         self.symbols_line_edit.setGeometry(200, 60, 50, 20)
 
@@ -68,11 +97,14 @@ class Window(QtWidgets.QWidget):
 
     def read_file(self):
 
-        fname = QFileDialog.getOpenFileName(self, 'Open file',
-                                            'data', "Any file (*.csv)")
-        print('File name:', fname[1])
+        try:
+            fname = QFileDialog.getOpenFileName(self, 'Open file',
+                                                'data', "Any file (*.csv)")
+            print('File name:', fname[1])
 
-        main.currency_analysis(file_name= fname[0])
+            main.currency_analysis(file_name= fname[0])
+        except:
+            print('File not read')
 
         # self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
         #
