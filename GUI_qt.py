@@ -65,6 +65,7 @@ class Window(QtWidgets.QWidget):
         # Base line edit
         self.base_line_edit = QtWidgets.QLineEdit(self)
         self.base_line_edit.setGeometry(200, 20, 50, 20)
+        self.base_line_edit.setText('USD')
 
         # Label symbols
         self.label_symbols = QtWidgets.QLabel(self)
@@ -76,6 +77,8 @@ class Window(QtWidgets.QWidget):
         # Symbols line edit
         self.symbols_line_edit = QtWidgets.QLineEdit(self)
         self.symbols_line_edit.setGeometry(200, 60, 50, 20)
+        self.symbols_line_edit.setText('CZK')
+
 
     def get_data(self):
         start_date_text = self.start_date.text()

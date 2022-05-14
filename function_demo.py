@@ -1,11 +1,14 @@
 import os
+import time
 import requests
 import pandas as pd
 import matplotlib.pyplot as plt
-import datetime
+import seaborn as sns
+import datetime, timedelta
 
 from tqdm import tqdm
 from os import remove
+
 
 # Sets the start date
 today_date = datetime.datetime.today().date()
@@ -16,66 +19,45 @@ def get_currency(start_date=None,
                  base='EUR',
                  symbols='RUB',
                  amount='1', format='csv', ):
-    # Request function
-    def request(start_date_r=start_date,
-                end_date_r=end_date,
-                base_r=base,
-                symbols_r=symbols,
-                amount_r=amount, format_r=format):
-        url = f'https://api.exchangerate.host/timeseries?{start_date_r}&{end_date_r}/'
-        payload = {'start_date': start_date_r, 'end_date': end_date_r,
-                   'base': base_r, 'symbols': symbols_r,
-                   'amount': amount_r, 'format': format_r}
-        response = requests.get(url, params=payload)
-        sub_df = pd.read_csv(response.url, sep=',')
-        sub_df.to_csv(f'data/{start_date_r}_{end_date_r}_{base_r}_{symbols_r}_currency_data_set.csv', header=None, mode='a')
-        return sub_df
-
     # Date and time
     request_date = pd.date_range(start=str(start_date), end=str(end_date)).strftime('%Y-%m-%d')
-    request_date_period = request_date
-    if request_date.size > 366:
-        request_date_period = pd.date_range(start=str(start_date), end=str(end_date),
-                                            periods=int((request_date.size / 366) + 2)).strftime('%Y-%m-%d')
-    else:
-        pass
 
     # Create directories
     try:
-        os.makedirs('data')
+        os.makedirs('my_folder')
     except OSError as e:
         print('./data is EXIST')
 
     # Clear data
     try:
-        os.remove(f'data/{start_date}_{end_date}_{base}_{symbols}_currency_data_set.csv')
+        os.remove(f'data/{today_date}_currency_data_set.csv')
     except:
         print('Not exist')
 
     # Log
     print('start_date:', start_date, '\n',
-          'end_date :', end_date, '\n',
-          'request_date.size :', int((request_date.size / 366) + 1), '\n',
-          'request_date')
-
-
-    print('request_date.size :', request_date.size, '\n',
-          request_date, '\n',
-          request_date_period)
+          request_date.values)
 
     # Requests
-    if request_date.size > 366:
-        print("IF")
-        for year in tqdm(range(0, request_date_period.size - 1), desc='Loading...'):
-            start_date = request_date_period[year]
-            end_date = request_date_period[year + 1]
+    for i in tqdm(range(0, len(request_date)), desc='Loading...'):
+        url = f'https://api.exchangerate.host/{request_date[i]}/'
+        payload = {'base': base, 'symbols': symbols,
+                   'amount': amount, 'format': format}
+        response = requests.get(url, params=payload)
 
-            request(start_date, end_date, base, symbols, amount, format)
+        time.sleep(0.1)
+        sub_df = pd.read_csv(response.url, sep=',')
 
+        # Save to csv
+        sub_df.to_csv(f'data/from_{start_date}_to_{end_date}_currency_data_set.csv', header=None, mode='a')
 
-    else:
-        # Requests
-        request(start_date, end_date, base, symbols, amount, format)
+        # # Log
+        # if (i == 0):
+        #     print('Work', url, payload, '\n',
+        #           response.url, '\n', )
+        # else:
+        #     print(sub_df)
+        #     sub_df.iloc[:], '\n')
 
 
 def currency_analysis(file_name):
@@ -128,6 +110,7 @@ def currency_analysis(file_name):
     # for i in range(0, len(max_of_df_rate_values)):
     #     print(i)
     #     sub_df.append(df[df['rate'] == max_of_df_rate_values[i]],)
+
 
     # df['year'] = df['date'].year
     # df.columns = ['A', 'B', 'C', 'D']
