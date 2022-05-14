@@ -7,6 +7,9 @@ start_date = '2011-01-03'
 end_date = '2012-01-03'
 base = 'EUR'
 symbols = 'RUB'
-get_currency(start_date=start_date, end_date=end_date, base=base, symbols=symbols)
+# Getting data
+# get_currency(start_date=start_date, end_date=end_date, base=base, symbols=symbols)
 
-currency_analysis()
+# Analyze
+
+

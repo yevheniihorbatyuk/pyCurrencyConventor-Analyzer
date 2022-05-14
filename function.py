@@ -49,7 +49,7 @@ def get_currency(start_date=None,
         sub_df = pd.read_csv(response.url, sep=',')
 
         # Save to csv
-        sub_df.to_csv(f'data/{today_date}_currency_data_set.csv', header=None, mode='a')
+        sub_df.to_csv(f'data/from_{start_date}_to_{end_date}_currency_data_set.csv', header=None, mode='a')
 
         # # Log
         # if (i == 0):
@@ -60,9 +60,9 @@ def get_currency(start_date=None,
         #     sub_df.iloc[:], '\n')
 
 
-def currency_analysis():
+def currency_analysis(file_name):
     # Read data set
-    df = pd.read_csv(f'data/{today_date}_currency_data_set.csv', sep=',',
+    df = pd.read_csv(f'{file_name}', sep=',',
                      names=['zero', 'code', 'rate', 'base', 'date'], parse_dates=True)
 
     # Data engineer
