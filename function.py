@@ -119,6 +119,8 @@ def currency_analysis(file_name):
           'Mean of years:', '\n',
           mean_of_years, '\n')
 
+
+    return str(df['rate'].describe()), max_of_df_rate, mean_of_years
     # Print main property
     # sub_df = pd.DataFrame([{
     #     'code': [0],

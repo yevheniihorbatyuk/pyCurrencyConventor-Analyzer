@@ -1,8 +1,6 @@
 import datetime
 import sys
 import random
-
-
 import main
 import datetime, timedelta
 from PySide6 import QtCore, QtWidgets, QtGui
@@ -37,12 +35,10 @@ class Window(QtWidgets.QWidget):
         self.label_end.setText('To :')
         self.label_end.setGeometry(1, 40, 30, 30)
 
-
         # End date line edit
         self.end_date = QtWidgets.QLineEdit(self)
         self.end_date.move(20, 65)
         self.end_date.setText(str(datetime.datetime.today().date()))
-
 
         self.btn_request = QtWidgets.QPushButton(self)
         self.btn_request.move(20, 100)
@@ -73,28 +69,40 @@ class Window(QtWidgets.QWidget):
         self.label_symbols.setGeometry(200, 40, 30, 30)
         self.label_symbols.adjustSize()
 
-
         # Symbols line edit
         self.symbols_line_edit = QtWidgets.QLineEdit(self)
         self.symbols_line_edit.setGeometry(200, 60, 50, 20)
         self.symbols_line_edit.setText('CZK')
 
 
+
+        self.output_date_describe_label = QtWidgets.QLabel(self)
+        self.output_date_describe_label.move(20, 150)
+        self.output_date_describe_label.adjustSize()
+
+        self.output_date_max_label = QtWidgets.QLabel(self)
+        self.output_date_max_label.move(50, 150)
+        self.output_date_max_label.adjustSize()
+
+        self.output_date_mean_label = QtWidgets.QLabel(self)
+        self.output_date_mean_label.move(70, 150)
+        self.output_date_mean_label.adjustSize()
+
     def get_data(self):
         start_date_text = self.start_date.text()
         end_date_text = self.end_date.text()
-        base_line_edit_text =self.base_line_edit.text()
+        base_line_edit_text = self.base_line_edit.text()
         symbols_line_edit_text = self.symbols_line_edit.text()
 
         print('get_data : work', '\n',
               'Start :', start_date_text, '\n'
-            'End :', end_date_text, '\n')
+                                          'End :', end_date_text, '\n')
         try:
             main.get_currency \
-                (start_date= start_date_text,
-                 end_date= end_date_text,
-                 base= base_line_edit_text,
-                 symbols= symbols_line_edit_text)
+                (start_date=start_date_text,
+                 end_date=end_date_text,
+                 base=base_line_edit_text,
+                 symbols=symbols_line_edit_text)
         except:
             print('Wrong input')
 
@@ -105,10 +113,14 @@ class Window(QtWidgets.QWidget):
                                                 'data', "Any file (*.csv)")
             print('File name:', fname[0])
 
-            main.currency_analysis(file_name= fname[0])
+            describe ,max_of_years, mean_of_year = main.currency_analysis(file_name=fname[0])
+
+
         except:
             print('File not read')
 
+    def show_btn_function(self):
+        pass
         # self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
         #
         # self.button = QtWidgets.QPushButton("Click me!")
@@ -124,6 +136,7 @@ class Window(QtWidgets.QWidget):
     def magic(self):
         pass
         # self.text.setText(random.choice(self.hello))
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
