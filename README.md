@@ -9,6 +9,7 @@ pip install pandas
 pip install matplotlib
 pip install seaborn
 pip install datetime
-pip install tqdm 
+pip install tqdm
+pip install PySide6
 ```
 

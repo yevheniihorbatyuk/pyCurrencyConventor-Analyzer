@@ -1,10 +1,8 @@
-import datetime
 import sys
-import random
 import main
-import datetime, timedelta
-from PySide6 import QtCore, QtWidgets, QtGui
-from PySide6.QtWidgets import QFileDialog
+import datetime
+from PyQt5 import QtWidgets, QtGui
+from PyQt5.QtWidgets import QFileDialog
 
 
 class Window(QtWidgets.QWidget):
@@ -74,18 +72,23 @@ class Window(QtWidgets.QWidget):
         self.symbols_line_edit.setGeometry(200, 60, 50, 20)
         self.symbols_line_edit.setText('CZK')
 
-
+        self.btn_show = QtWidgets.QPushButton(self)
+        self.btn_show.move(180, 100)
+        self.btn_show.setText('SHOW')
+        self.btn_show.adjustSize()
+        # self.btn_show.clicked.connect(self.show_btn_function())
 
         self.output_date_describe_label = QtWidgets.QLabel(self)
         self.output_date_describe_label.move(20, 150)
         self.output_date_describe_label.adjustSize()
 
         self.output_date_max_label = QtWidgets.QLabel(self)
-        self.output_date_max_label.move(50, 150)
+        self.output_date_max_label.move(200, 150)
         self.output_date_max_label.adjustSize()
 
         self.output_date_mean_label = QtWidgets.QLabel(self)
-        self.output_date_mean_label.move(70, 150)
+        self.output_date_mean_label.move(300, 150)
+        self.output_date_mean_label.setText('Weeeeee')
         self.output_date_mean_label.adjustSize()
 
     def get_data(self):
@@ -113,14 +116,30 @@ class Window(QtWidgets.QWidget):
                                                 'data', "Any file (*.csv)")
             print('File name:', fname[0])
 
-            describe ,max_of_years, mean_of_year = main.currency_analysis(file_name=fname[0])
+            describe, max_of_years, mean_of_year = main.currency_analysis(file_name=fname[0])
 
+            self.output_date_describe_label.setText(describe)
+            self.output_date_describe_label.adjustSize()
+
+            self.output_date_max_label.setText(str(max_of_years))
+            self.output_date_max_label.adjustSize()
+
+            self.output_date_mean_label.setText(str(mean_of_year))
+            self.output_date_mean_label.adjustSize()
 
         except:
             print('File not read')
 
-    def show_btn_function(self):
-        pass
+        # return describe ,max_of_years, mean_of_year
+
+    # def show_btn_function(self):
+
+        # describe, max_of_years, mean_of_year = self.read_file()
+        # self.output_date_describe_label.setText(describe)
+        #
+        # self.output_date_max_label.setText(self.read_file()[0])
+        #
+        # self.output_date_mean_label.setText(self.read_file()[0])
         # self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
         #
         # self.button = QtWidgets.QPushButton("Click me!")
@@ -132,10 +151,10 @@ class Window(QtWidgets.QWidget):
         #
         # self.button.clicked.connect(self.magic)
 
-    @QtCore.Slot()
-    def magic(self):
-        pass
-        # self.text.setText(random.choice(self.hello))
+    # @QtCore.Slot()
+    # def magic(self):
+    #     pass
+    #     # self.text.setText(random.choice(self.hello))
 
 
 if __name__ == "__main__":
