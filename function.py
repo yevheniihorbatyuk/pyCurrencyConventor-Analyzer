@@ -120,6 +120,18 @@ def currency_analysis(file_name):
           mean_of_years, '\n')
 
 
+
+    # plt.hist(mean_of_years['rate'])
+    plt.subplot(2, 1, 1)
+    plt.plot(df['date'], df['rate'])
+    plt.subplot(2, 1, 1)
+    plt.scatter(mean_of_years_index, mean_of_years['rate'], c='green')
+
+    plt.subplot(2, 1, 2)
+    plt.bar(mean_of_years_index, mean_of_years['rate'])
+    plt.savefig(f'data/{today_date}plot')
+    plt.show()
+
     return str(df['rate'].describe()), max_of_df_rate, mean_of_years
     # Print main property
     # sub_df = pd.DataFrame([{
@@ -153,11 +165,11 @@ def currency_analysis(file_name):
 
     # plt.hist(mean_of_yeasrs['rate'])
     # plt.style.use('ggplot')
-    # plt.hist(mean_of_yeasrs['rate'])
+    plt.hist(mean_of_yeasrs['rate'])
     plt.subplot(2, 1, 1)
     plt.plot(df['date'], df['rate'])
-    # plt.subplot(2, 1, 1)
-    # plt.scatter(mean_of_years_index, mean_of_years['rate'], c='green')
+    plt.subplot(2, 1, 1)
+    plt.scatter(mean_of_years_index, mean_of_years['rate'], c='green')
     # plt.subplot(2, 1, 1)
     # plt.scatter(max_of_df_rate_index, max_of_df_rate, c='red')
 
