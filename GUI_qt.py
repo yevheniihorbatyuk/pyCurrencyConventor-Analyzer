@@ -1,15 +1,25 @@
+import os
 import sys
+
+import function
 import main
 import datetime
-from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtWidgets import QFileDialog
+import openpyxl
+import pandas as pd
+import datetime
+
+from PySide6 import QtWidgets, QtGui
+from PySide6.QtWidgets import QFileDialog
 
 
 class Window(QtWidgets.QWidget):
     def __init__(self):
         super(Window, self).__init__()
 
+
         self.initUI()
+
+
 
     def initUI(self):
 
@@ -72,24 +82,40 @@ class Window(QtWidgets.QWidget):
         self.symbols_line_edit.setGeometry(200, 60, 50, 20)
         self.symbols_line_edit.setText('CZK')
 
-        self.btn_show = QtWidgets.QPushButton(self)
-        self.btn_show.move(180, 100)
-        self.btn_show.setText('SHOW')
-        self.btn_show.adjustSize()
-        # self.btn_show.clicked.connect(self.show_btn_function())
 
+        # Show describe
         self.output_date_describe_label = QtWidgets.QLabel(self)
         self.output_date_describe_label.move(20, 150)
+        self.output_date_describe_label.setText('DESCRIBE')
         self.output_date_describe_label.adjustSize()
 
+        # Show max values
         self.output_date_max_label = QtWidgets.QLabel(self)
         self.output_date_max_label.move(200, 150)
+        self.output_date_max_label.setText('MAX')
         self.output_date_max_label.adjustSize()
 
+        # Show mean values
         self.output_date_mean_label = QtWidgets.QLabel(self)
         self.output_date_mean_label.move(300, 150)
-        self.output_date_mean_label.setText('Weeeeee')
+        self.output_date_mean_label.setText('MEAN')
         self.output_date_mean_label.adjustSize()
+
+        # Show min values
+        self.output_date_min_label = QtWidgets.QLabel(self)
+        self.output_date_min_label.move(400, 150)
+        self.output_date_min_label.setText('MIN')
+        self.output_date_min_label.adjustSize()
+
+        # Save report button
+        self.btn_save = QtWidgets.QPushButton(self)
+        self.btn_save.move(180, 100)
+        self.btn_save.setText('Save report')
+        self.btn_save.adjustSize()
+        self.btn_save.clicked.connect(self.save_report)
+
+
+
 
     def get_data(self):
         start_date_text = self.start_date.text()
@@ -111,45 +137,83 @@ class Window(QtWidgets.QWidget):
 
     def read_file(self):
 
+        global df, describe, max_of_years, mean_of_year, min_of_year
+
         try:
             fname = QFileDialog.getOpenFileName(self, 'Open file',
                                                 'data', "Any file (*.csv)")
             print('File name:', fname[0])
 
-            describe, max_of_years, mean_of_year = main.currency_analysis(file_name=fname[0])
-
-            self.output_date_describe_label.setText(describe)
-            self.output_date_describe_label.adjustSize()
-
-            self.output_date_max_label.setText(str(max_of_years))
-            self.output_date_max_label.adjustSize()
-
-            self.output_date_mean_label.setText(str(mean_of_year))
-            self.output_date_mean_label.adjustSize()
+            df, describe, max_of_years, mean_of_year, min_of_year = main.currency_analysis(file_name= fname[0])
 
         except:
             print('File not read')
 
+        self.output_date_describe_label.setText(str(describe))
+        self.output_date_describe_label.adjustSize()
+
+        self.output_date_max_label.setText(str(max_of_years))
+        self.output_date_max_label.adjustSize()
+
+        self.output_date_mean_label.setText(str(mean_of_year))
+        self.output_date_mean_label.adjustSize()
+
+        self.output_date_min_label.setText(str(min_of_year))
+        self.output_date_min_label.adjustSize()
+
+
+
+
+    def save_report(self):
+
+        dir_path = QFileDialog.getExistingDirectory(self, "Choose Directory", "report")
+        print(dir_path)
+
+        # save_dir =f'report{datetime.datetime.today()}'
+        # try:
+        #     os.makedirs(f'{dir_path}/report{datetime.datetime.today()}')
+        #     print('Report directory have been CREATED')
+        #
+        # except OSError as e:
+        #     print('Report directory is EXIST')
+
+        # Saving to csv
+        df.to_csv(f'{dir_path}/DataFrame.csv')
+        describe.to_csv(f'{dir_path}/describe.csv')
+        max_of_years.to_csv(f'{dir_path}/max_of_year.csv')
+        mean_of_year.to_csv(f'{dir_path}/mean_of_year.csv')
+        min_of_year.to_csv(f'{dir_path}/min_of_year.csv')
+
+        # Saving to xlsx
+        with pd.ExcelWriter(f'{dir_path}/REPORT.xlsx') as writen:
+            df.to_excel(writen, sheet_name='DataFrame')
+            describe.to_excel(writen, sheet_name='describe')
+            max_of_years.to_excel(writen, sheet_name='max_of_years')
+            mean_of_year.to_excel(writen, sheet_name='mean_of_years')
+            min_of_year.to_excel(writen, sheet_name='min_of_years')
+
+        # sub_df = pd.DataFrame(data= describe, copy= describe)
+        # sub_df.to_csv('describe.csv')
         # return describe ,max_of_years, mean_of_year
 
     # def show_btn_function(self):
 
-        # describe, max_of_years, mean_of_year = self.read_file()
-        # self.output_date_describe_label.setText(describe)
-        #
-        # self.output_date_max_label.setText(self.read_file()[0])
-        #
-        # self.output_date_mean_label.setText(self.read_file()[0])
-        # self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
-        #
-        # self.button = QtWidgets.QPushButton("Click me!")
-        # self.text = QtWidgets.QLabel("Hello World", alignment=QtCore.Qt.AlignCenter)
-        #
-        # self.layout = QtWidgets.QVBoxLayout(self)
-        # self.layout.addWidget(self.text)
-        # self.layout.addWidget(self.button)
-        #
-        # self.button.clicked.connect(self.magic)
+    # describe, max_of_years, mean_of_year = self.read_file()
+    # self.output_date_describe_label.setText(describe)
+    #
+    # self.output_date_max_label.setText(self.read_file()[0])
+    #
+    # self.output_date_mean_label.setText(self.read_file()[0])
+    # self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
+    #
+    # self.button = QtWidgets.QPushButton("Click me!")
+    # self.text = QtWidgets.QLabel("Hello World", alignment=QtCore.Qt.AlignCenter)
+    #
+    # self.layout = QtWidgets.QVBoxLayout(self)
+    # self.layout.addWidget(self.text)
+    # self.layout.addWidget(self.button)
+    #
+    # self.button.clicked.connect(self.magic)
 
     # @QtCore.Slot()
     # def magic(self):

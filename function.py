@@ -29,7 +29,6 @@ def get_currency(start_date=None,
         response = requests.get(url, params=payload)
         sub_df = pd.read_csv(response.url, sep=',')
         sub_df.to_csv(f'data/{start_date}_{end_date}_{base}_{symbols}_currency_data_set.csv', header=None, mode='a')
-        # sub_df.to_csv(f'data/{today_date}_currency_data_set.csv', header=None, mode='a')
 
         return sub_df
 
@@ -51,7 +50,7 @@ def get_currency(start_date=None,
     # Clear data
     try:
         os.remove(f'data/{start_date}_{end_date}_{base}_{symbols}_currency_data_set.csv')
-        # os.remove(f'data/{today_date}_currency_data_set.csv')
+        print('Date was be rewrote')
 
     except:
         print('Not exist')
@@ -75,9 +74,8 @@ def get_currency(start_date=None,
 
             request(start_date_period, end_date_period, base, symbols, amount, format)
 
-
     else:
-        # Requests
+        # Requests single (one time)
         request(start_date, end_date, base, symbols, amount, format)
 
 
@@ -102,6 +100,10 @@ def currency_analysis(file_name):
     max_of_df_rate_index = max_of_df_rate.index.values.astype(str)
     max_of_df_rate_values = max_of_df_rate['rate'].values
 
+    min_of_df_rate = df.groupby('year').aggregate({'rate': 'min'})
+    min_of_df_rate_index = min_of_df_rate.index.values.astype(str)
+    min_of_df_rate_value = min_of_df_rate['rate'].values
+
     # LOG
     print('\n------------------------\n',
           'Head of DataFrame:', '\n',
@@ -117,22 +119,28 @@ def currency_analysis(file_name):
 
           '\n------------------------\n',
           'Mean of years:', '\n',
-          mean_of_years, '\n')
+          mean_of_years, '\n'
+                         
+          '\n------------------------\n',
+          'Mean of years:', '\n',
+          min_of_df_rate, '\n',
+
+          )
 
 
 
-    # plt.hist(mean_of_years['rate'])
-    plt.subplot(2, 1, 1)
-    plt.plot(df['date'], df['rate'])
-    plt.subplot(2, 1, 1)
-    plt.scatter(mean_of_years_index, mean_of_years['rate'], c='green')
+    # # plt.hist(mean_of_years['rate'])
+    # plt.subplot(2, 1, 1)
+    # plt.plot(df['date'], df['rate'])
+    # plt.subplot(2, 1, 1)
+    # plt.scatter(mean_of_years_index, mean_of_years['rate'], c='green')
+    #
+    # plt.subplot(2, 1, 2)
+    # plt.bar(mean_of_years_index, mean_of_years['rate'])
+    # plt.savefig(f'data/{today_date}plot')
+    # plt.show()
 
-    plt.subplot(2, 1, 2)
-    plt.bar(mean_of_years_index, mean_of_years['rate'])
-    plt.savefig(f'data/{today_date}plot')
-    plt.show()
-
-    return str(df['rate'].describe()), max_of_df_rate, mean_of_years
+    return df, df['rate'].describe(), max_of_df_rate, mean_of_years, min_of_df_rate
     # Print main property
     # sub_df = pd.DataFrame([{
     #     'code': [0],
@@ -161,22 +169,22 @@ def currency_analysis(file_name):
     #       max_of_df_rate_index, '\n',
     #       df[df['rate'] == max_of_df_rate_values[1]], '\n',)
 
-    # sns.lineplot(x= mean_of_yeasrs.index.values, y=mean_of_yeasrs.rate)
-
+    # # sns.lineplot(x= mean_of_yeasrs.index.values, y=mean_of_yeasrs.rate)
+    #
+    # # plt.hist(mean_of_yeasrs['rate'])
+    # # plt.style.use('ggplot')
     # plt.hist(mean_of_yeasrs['rate'])
-    # plt.style.use('ggplot')
-    plt.hist(mean_of_yeasrs['rate'])
-    plt.subplot(2, 1, 1)
-    plt.plot(df['date'], df['rate'])
-    plt.subplot(2, 1, 1)
-    plt.scatter(mean_of_years_index, mean_of_years['rate'], c='green')
     # plt.subplot(2, 1, 1)
-    # plt.scatter(max_of_df_rate_index, max_of_df_rate, c='red')
-
-    plt.subplot(2, 1, 2)
-    plt.bar(mean_of_years_index, mean_of_years['rate'])
-    plt.savefig(f'data/{today_date}plot')
-    plt.show()
+    # plt.plot(df['date'], df['rate'])
+    # plt.subplot(2, 1, 1)
+    # plt.scatter(mean_of_years_index, mean_of_years['rate'], c='green')
+    # # plt.subplot(2, 1, 1)
+    # # plt.scatter(max_of_df_rate_index, max_of_df_rate, c='red')
+    #
+    # plt.subplot(2, 1, 2)
+    # plt.bar(mean_of_years_index, mean_of_years['rate'])
+    # plt.savefig(f'data/{today_date}plot')
+    # plt.show()
 
 # def currency_plot(data_set):
 

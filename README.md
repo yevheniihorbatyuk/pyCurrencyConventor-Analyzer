@@ -10,6 +10,7 @@ pip install matplotlib
 pip install seaborn
 pip install datetime
 pip install tqdm
-pip install PySide6
+pip install PyQt5
+(pip install PySide6)
 ```
 

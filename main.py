@@ -11,5 +11,5 @@ symbols = 'RUB'
 # get_currency(start_date=start_date, end_date=end_date, base=base, symbols=symbols)
 
 # Analyze
-# currency_analysis('data/2022-05-15_currency_data_set.csv')
+# currency_analysis('data/2010-05-15_2022-05-15_USD_CZK_currency_data_set.csv')
 

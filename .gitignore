@@ -1,4 +1,4 @@
-/currency_rates.py
+/test/currency_rates.py
 /.idea/.gitignore
 /.idea/misc.xml
 /.idea/modules.xml
@@ -6,3 +6,9 @@
 /.idea/pyCurrencyConventor-Analyzer.iml
 /.idea/vcs.xml
 /data/
+/test/function_demo_v1.py
+/test/GUI_test.py
+/money_icon.png
+/test/qt.py
+/report/
+/test/
