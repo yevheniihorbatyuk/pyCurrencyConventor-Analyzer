@@ -1,6 +1,5 @@
 import os
 import sys
-
 import function
 import main
 import datetime
@@ -166,31 +165,37 @@ class Window(QtWidgets.QWidget):
 
     def save_report(self):
 
+
+        try:
+            os.mkdir('report')
+            print('Report directory have been CREATED')
+
+        except OSError as e:
+            print('Report directory is EXIST')
+
         dir_path = QFileDialog.getExistingDirectory(self, "Choose Directory", "report")
         print(dir_path)
 
         # save_dir =f'report{datetime.datetime.today()}'
-        # try:
-        #     os.makedirs(f'{dir_path}/report{datetime.datetime.today()}')
-        #     print('Report directory have been CREATED')
-        #
-        # except OSError as e:
-        #     print('Report directory is EXIST')
 
-        # Saving to csv
-        df.to_csv(f'{dir_path}/DataFrame.csv')
-        describe.to_csv(f'{dir_path}/describe.csv')
-        max_of_years.to_csv(f'{dir_path}/max_of_year.csv')
-        mean_of_year.to_csv(f'{dir_path}/mean_of_year.csv')
-        min_of_year.to_csv(f'{dir_path}/min_of_year.csv')
+        try:
 
-        # Saving to xlsx
-        with pd.ExcelWriter(f'{dir_path}/REPORT.xlsx') as writen:
-            df.to_excel(writen, sheet_name='DataFrame')
-            describe.to_excel(writen, sheet_name='describe')
-            max_of_years.to_excel(writen, sheet_name='max_of_years')
-            mean_of_year.to_excel(writen, sheet_name='mean_of_years')
-            min_of_year.to_excel(writen, sheet_name='min_of_years')
+            # Saving to csv
+            df.to_csv(f'{dir_path}/DataFrame.csv')
+            describe.to_csv(f'{dir_path}/describe.csv')
+            max_of_years.to_csv(f'{dir_path}/max_of_year.csv')
+            mean_of_year.to_csv(f'{dir_path}/mean_of_year.csv')
+            min_of_year.to_csv(f'{dir_path}/min_of_year.csv')
+
+            # Saving to xlsx
+            with pd.ExcelWriter(f'{dir_path}/REPORT.xlsx') as writen:
+                df.to_excel(writen, sheet_name='DataFrame')
+                describe.to_excel(writen, sheet_name='describe')
+                max_of_years.to_excel(writen, sheet_name='max_of_years')
+                mean_of_year.to_excel(writen, sheet_name='mean_of_years')
+                min_of_year.to_excel(writen, sheet_name='min_of_years')
+        except:
+            print('Not saved')
 
         # sub_df = pd.DataFrame(data= describe, copy= describe)
         # sub_df.to_csv('describe.csv')

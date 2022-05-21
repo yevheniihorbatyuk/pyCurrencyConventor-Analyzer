@@ -129,16 +129,16 @@ def currency_analysis(file_name):
 
 
 
-    # # plt.hist(mean_of_years['rate'])
-    # plt.subplot(2, 1, 1)
-    # plt.plot(df['date'], df['rate'])
-    # plt.subplot(2, 1, 1)
-    # plt.scatter(mean_of_years_index, mean_of_years['rate'], c='green')
-    #
-    # plt.subplot(2, 1, 2)
-    # plt.bar(mean_of_years_index, mean_of_years['rate'])
-    # plt.savefig(f'data/{today_date}plot')
-    # plt.show()
+    plt.hist(mean_of_years['rate'])
+    plt.subplot(2, 1, 1)
+    plt.plot(df['date'], df['rate'])
+    plt.subplot(2, 1, 1)
+    plt.scatter(mean_of_years_index, mean_of_years['rate'], c='green')
+
+    plt.subplot(2, 1, 2)
+    plt.bar(mean_of_years_index, mean_of_years['rate'])
+    plt.savefig(f'data/{today_date}plot')
+    plt.show()
 
     return df, df['rate'].describe(), max_of_df_rate, mean_of_years, min_of_df_rate
     # Print main property
